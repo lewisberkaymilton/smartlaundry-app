@@ -30,11 +30,18 @@ const register = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Email already in use' });
     }
 
+    if (role && role !== 'customer') {
+      return res.status(403).json({
+        success: false,
+        message: 'Admin accounts cannot be created via public registration',
+      });
+    }
+
     const user = await User.create({
       name,
       email,
       password,
-      role: role === 'admin' ? 'admin' : 'customer',
+      role: 'customer',
     });
 
     sendTokenResponse(user, 201, res);
