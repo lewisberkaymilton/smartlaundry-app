@@ -1,0 +1,17 @@
+{
+  "name": "laundrysystem",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Smart Laundry Slot System monorepo",
+  "scripts": {
+    "install:all": "npm install --prefix backend && npm install --prefix frontend",
+    "dev": "concurrently -n BACKEND,FRONTEND -c green,cyan \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\"",
+    "open": "npm run dev",
+    "seed": "npm run seed --prefix backend",
+    "start:backend": "npm run dev --prefix backend",
+    "start:frontend": "npm run dev --prefix frontend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
