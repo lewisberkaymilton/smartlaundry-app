@@ -355,6 +355,9 @@ const Dashboard = () => {
   const [reportsError, setReportsError] = useState('');
   const [reportStatusDrafts, setReportStatusDrafts] = useState({});
   const [busyReportId, setBusyReportId] = useState(null);
+  const userFirstName = typeof user?.name === 'string' && user.name.trim()
+    ? user.name.trim().split(/\s+/)[0]
+    : 'User';
 
   const fetchMachines = useCallback(async (silent = false) => {
     if (!silent) setLoading(true);
@@ -522,7 +525,7 @@ const Dashboard = () => {
         >
           <div>
             <h1 className="text-2xl font-bold text-slate-800">
-              Hey {user?.name?.split(' ')[0]} 👋
+              Hey {userFirstName} 👋
             </h1>
             <p className="text-slate-500 text-sm mt-0.5">
               Campus laundry · real-time availability
