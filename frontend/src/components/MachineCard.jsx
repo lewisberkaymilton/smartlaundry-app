@@ -185,6 +185,23 @@ const MachineCard = ({ machine: initialMachine, onSessionComplete }) => {
     return diff > 0 ? Math.ceil(diff / 1000) : 0;
   }, [machine.currentUsageEnd]);
 
+  const autoCompleteSession = useCallback(async () => {
+    if (autoCompleting) return;
+    setAutoCompleting(true);
+    try {
+      const { data } = await api.patch(`/sessions/machine/${machine._id}/complete`);
+      setMachine(data.data);
+      setIsDone(false);
+      setTimeLeft(null);
+      setActiveSessionKey(null);
+      setCompletionNotified(false);
+    } catch {
+      // Ignore temporary auto-complete failures and allow manual completion fallback.
+    } finally {
+      setAutoCompleting(false);
+    }
+  }, [autoCompleting, machine._id]);
+
   useEffect(() => {
     setMachine(initialMachine);
 
@@ -296,23 +313,6 @@ const MachineCard = ({ machine: initialMachine, onSessionComplete }) => {
       setLoading(false);
     }
   };
-
-  const autoCompleteSession = useCallback(async () => {
-    if (autoCompleting) return;
-    setAutoCompleting(true);
-    try {
-      const { data } = await api.patch(`/sessions/machine/${machine._id}/complete`);
-      setMachine(data.data);
-      setIsDone(false);
-      setTimeLeft(null);
-      setActiveSessionKey(null);
-      setCompletionNotified(false);
-    } catch {
-      // Ignore temporary auto-complete failures and allow manual completion fallback.
-    } finally {
-      setAutoCompleting(false);
-    }
-  }, [autoCompleting, machine._id]);
 
   const cfg         = getStatusCfg(machine.status, machine.type);
   const isRunning   = machine.status === 'Washing' && !isDone;
