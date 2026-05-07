@@ -361,7 +361,7 @@ const Dashboard = () => {
     else setRefreshing(true);
     try {
       const { data } = await api.get('/machines');
-      setAllMachines(data.data);
+      setAllMachines(Array.isArray(data.data) ? data.data : []);
       setError('');
     } catch {
       setError('Failed to load machines. Is the server running?');
@@ -376,7 +376,7 @@ const Dashboard = () => {
     if (!silent) setReportsLoading(true);
     try {
       const { data } = await api.get('/reports');
-      setReports(data.data || []);
+      setReports(Array.isArray(data.data) ? data.data : []);
       setReportsError('');
     } catch {
       setReportsError('Failed to load reports');
@@ -400,14 +400,16 @@ const Dashboard = () => {
 
   // Derived: machines visible in this view
   const visibleMachines = useMemo(() => {
-    return allMachines
+    const source = Array.isArray(allMachines) ? allMachines : [];
+    return source
       .filter((m) => selectedBlock === 'all' || m.block === selectedBlock)
       .filter((m) => selectedType === 'all'  || m.type  === selectedType);
   }, [allMachines, selectedBlock, selectedType]);
 
   // Stats scoped to current block+type selection
   const scopedMachines = useMemo(() => {
-    return allMachines
+    const source = Array.isArray(allMachines) ? allMachines : [];
+    return source
       .filter((m) => selectedBlock === 'all' || m.block === selectedBlock)
       .filter((m) => selectedType === 'all'  || m.type  === selectedType);
   }, [allMachines, selectedBlock, selectedType]);
@@ -580,7 +582,7 @@ const Dashboard = () => {
             />
 
             <AdminMachineTable
-              machines={allMachines}
+              machines={Array.isArray(allMachines) ? allMachines : []}
               statusDrafts={machineStatusDrafts}
               busyMachineId={busyMachineId}
               onStatusDraft={(machineId, status) =>
@@ -596,7 +598,7 @@ const Dashboard = () => {
               <div className="card text-sm text-red-500">{reportsError}</div>
             ) : (
               <AdminReportsPanel
-                reports={reports}
+                reports={Array.isArray(reports) ? reports : []}
                 reportDrafts={reportStatusDrafts}
                 busyReportId={busyReportId}
                 onDraftChange={(reportId, status) =>
