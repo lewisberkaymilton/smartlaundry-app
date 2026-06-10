@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import History from './pages/History';
+import AdminMachines from './pages/AdminMachines';
 
 function App() {
   return (
@@ -28,6 +29,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <History />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/machines"
+              element={
+                <ProtectedRoute>
+                  <AdminMachines />
                 </ProtectedRoute>
               }
             />

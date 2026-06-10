@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { LogOut, User, History } from 'lucide-react';
+import { LogOut, User, History, Settings2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { motion } from 'framer-motion';
 import BrandMark from './BrandMark';
@@ -36,6 +36,15 @@ const Navbar = () => {
             <History size={16} />
             <span className="hidden sm:inline">History</span>
           </Link>
+          {user?.role === 'admin' && (
+            <Link
+              to="/admin/machines"
+              className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
+            >
+              <Settings2 size={16} />
+              <span className="hidden sm:inline">Machines</span>
+            </Link>
+          )}
 
           <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-50 border border-slate-100">
             <div className="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center">
