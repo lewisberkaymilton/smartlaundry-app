@@ -9,7 +9,7 @@ const BrandMark = ({ size = 'md', className = '' }) => {
 
   return (
     <div
-      className={`relative ${s.outer} ${className} rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 shadow-lg shadow-blue-300/50`}
+      className={`relative ${s.outer} ${className} rounded-2xl bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 shadow-lg shadow-blue-400/40`}
       aria-hidden="true"
     >
       <div className="absolute inset-0.5 rounded-[14px] border border-white/30" />
@@ -24,9 +24,17 @@ const BrandMark = ({ size = 'md', className = '' }) => {
           </svg>
         </div>
       </div>
+      <div className="absolute top-[8%] right-[8%] rounded-md border border-white/35 bg-black/10 px-1 py-[1px] text-[7px] font-bold tracking-wide text-white/90">
+        SL
+      </div>
       <div className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-cyan-300 border border-white/80 shadow-sm" />
       <div className="absolute -bottom-1 -left-1 h-2.5 w-2.5 rounded-full bg-blue-100/70" />
       <div className="absolute top-1.5 left-1.5 h-2 w-2 rounded-full bg-white/35" />
+      <div className="absolute left-[10%] bottom-[9%] grid grid-cols-3 gap-[2px]">
+        <span className="h-[3px] w-[3px] rounded-sm bg-cyan-200/80" />
+        <span className="h-[3px] w-[3px] rounded-sm bg-white/75" />
+        <span className="h-[3px] w-[3px] rounded-sm bg-cyan-200/80" />
+      </div>
       <div className="absolute top-[22%] left-[25%] h-[28%] w-[28%] rounded-full bg-white/10 blur-[1px]" />
       <div className="absolute bottom-[20%] right-[20%] h-[18%] w-[18%] rounded-full bg-cyan-200/20 blur-[1px]" />
       <div className="absolute top-[47%] right-[26%] h-[10%] w-[10%] rounded-full bg-white/50" />

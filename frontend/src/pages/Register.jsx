@@ -33,13 +33,20 @@ const Register = () => {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-slate-200 via-slate-100 to-blue-100 flex items-center justify-center px-4 py-8">
-      {/* Background texture: soft grid + light blobs */}
+      {/* Background texture: soft grid + diagonal campus lanes */}
       <div
         className="absolute inset-0 opacity-40"
         style={{
           backgroundImage:
             'linear-gradient(to right, rgba(148,163,184,0.15) 1px, transparent 1px), linear-gradient(to bottom, rgba(148,163,184,0.15) 1px, transparent 1px)',
           backgroundSize: '34px 34px',
+        }}
+      />
+      <div
+        className="absolute inset-0 opacity-20"
+        style={{
+          backgroundImage:
+            'repeating-linear-gradient(125deg, rgba(37,99,235,0.14) 0px, rgba(37,99,235,0.14) 2px, transparent 2px, transparent 24px)',
         }}
       />
       <div className="absolute -top-28 -left-16 w-80 h-80 rounded-full bg-blue-300/20 blur-3xl" />
@@ -52,14 +59,15 @@ const Register = () => {
         className="relative z-10 w-full max-w-5xl grid lg:grid-cols-2 overflow-hidden rounded-3xl border border-slate-200/80 bg-white/95 backdrop-blur shadow-2xl shadow-slate-300/60"
       >
         {/* Brand side */}
-        <div className="hidden lg:flex flex-col justify-between bg-gradient-to-br from-blue-700 to-blue-500 p-8 text-white">
+        <div className="relative hidden lg:flex flex-col justify-between bg-gradient-to-br from-blue-800 via-blue-700 to-indigo-700 p-8 text-white">
+          <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.35),transparent_38%)]" />
           <div>
             <BrandMark size="lg" className="mb-4" />
             <h1 className="text-3xl font-extrabold tracking-tight">
               Smart<span className="text-blue-100">Laundry</span>
             </h1>
             <p className="mt-2 text-blue-100/90">
-              Create your account and get laundry done without waiting.
+              Create your account and skip the laundry queue.
             </p>
           </div>
 
@@ -172,7 +180,7 @@ const Register = () => {
               </div>
             </div>
 
-            <button type="submit" disabled={loading} className="btn-primary mt-2">
+            <button type="submit" disabled={loading} className="btn-primary auth-btn mt-2">
               <UserPlus size={16} />
               {loading ? 'Creating account…' : 'Create Account'}
             </button>
