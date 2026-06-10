@@ -1,5 +1,6 @@
 const Machine = require('../models/Machine');
 const Session = require('../models/Session');
+const { logAuditEvent } = require('../utils/auditLogger');
 
 // POST /api/sessions/start
 const startSession = async (req, res) => {
@@ -48,6 +49,13 @@ const startSession = async (req, res) => {
     await machine.save();
 
     const updatedMachine = await Machine.findById(machine._id).populate('currentUser', 'name email role');
+    await logAuditEvent({
+      req,
+      action: 'SESSION_STARTED',
+      entityType: 'Session',
+      entityId: session._id,
+      metadata: { machineId: machine._id, machineName: machine.name, programme, durationSeconds: Number(durationSeconds) },
+    });
 
     res.status(201).json({
       success: true,
@@ -94,6 +102,13 @@ const completeSession = async (req, res) => {
     machine.currentUsageEnd = null;
     machine.programme = null;
     await machine.save();
+    await logAuditEvent({
+      req,
+      action: 'SESSION_COMPLETED',
+      entityType: 'Session',
+      entityId: session._id,
+      metadata: { machineId: machine._id, machineName: machine.name },
+    });
 
     const updatedMachine = await Machine.findById(machine._id).populate('currentUser', 'name email role');
     res.status(200).json({ success: true, message: 'Session completed', data: updatedMachine, session });

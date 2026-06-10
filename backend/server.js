@@ -7,6 +7,7 @@ const authRoutes = require('./routes/authRoutes');
 const machineRoutes = require('./routes/machineRoutes');
 const sessionRoutes = require('./routes/sessionRoutes');
 const reportRoutes = require('./routes/reportRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 connectDB();
 
@@ -34,6 +35,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/machines', machineRoutes);
 app.use('/api/sessions', sessionRoutes);
 app.use('/api/reports', reportRoutes);
+app.use('/api/admin', adminRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ success: true, message: 'Smart Laundry API is running' });

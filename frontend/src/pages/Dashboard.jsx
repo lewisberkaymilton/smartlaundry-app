@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   RefreshCw, WashingMachine, CheckCircle, AlertTriangle,
   Zap, Wind, LayoutGrid, Building2, Settings2, ClipboardList, BellRing,
+  BarChart3, Clock3, ShieldCheck,
 } from 'lucide-react';
 import api from '../api/axios';
 import MachineCard from '../components/MachineCard';
@@ -228,6 +229,101 @@ const AdminReportsPanel = ({ reports, reportDrafts, onDraftChange, onApplyStatus
   );
 };
 
+const AdminInsightsPanel = ({ insights }) => {
+  const totals = insights?.totals || {};
+  const machineStatusCounts = insights?.machineStatusCounts || {};
+  const reportStatusCounts = insights?.reportStatusCounts || {};
+  const recentAuditLogs = Array.isArray(insights?.recentAuditLogs) ? insights.recentAuditLogs : [];
+
+  const machineTotal = Math.max(1, Number(totals.machines || 0));
+  const reportTotal = Math.max(1, Number(totals.reports || 0));
+  const availableWidth = (Number(machineStatusCounts.Available || 0) / machineTotal) * 100;
+  const activeWidth = (Number(machineStatusCounts.Washing || 0) / machineTotal) * 100;
+  const outWidth = (Number(machineStatusCounts['Out of Order'] || 0) / machineTotal) * 100;
+  const openReportWidth = (Number(reportStatusCounts.open || 0) / reportTotal) * 100;
+  const inProgressReportWidth = (Number(reportStatusCounts.in_progress || 0) / reportTotal) * 100;
+  const resolvedReportWidth = (Number(reportStatusCounts.resolved || 0) / reportTotal) * 100;
+
+  return (
+    <div className="card">
+      <div className="flex items-center gap-2 mb-4">
+        <BarChart3 size={16} className="text-blue-600" />
+        <h3 className="text-sm font-bold text-slate-800">Admin Analytics</h3>
+      </div>
+
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
+        <div className="rounded-xl border border-blue-100 bg-blue-50 px-3 py-2">
+          <p className="text-xs text-blue-600 font-semibold uppercase tracking-wide">Total Machines</p>
+          <p className="text-xl font-bold text-blue-800">{totals.machines || 0}</p>
+        </div>
+        <div className="rounded-xl border border-emerald-100 bg-emerald-50 px-3 py-2">
+          <p className="text-xs text-emerald-600 font-semibold uppercase tracking-wide">Active Sessions</p>
+          <p className="text-xl font-bold text-emerald-800">{totals.activeSessions || 0}</p>
+        </div>
+        <div className="rounded-xl border border-violet-100 bg-violet-50 px-3 py-2">
+          <p className="text-xs text-violet-600 font-semibold uppercase tracking-wide">Avg Session</p>
+          <p className="text-xl font-bold text-violet-800">{insights.averageSessionMinutes || 0} min</p>
+        </div>
+        <div className="rounded-xl border border-amber-100 bg-amber-50 px-3 py-2">
+          <p className="text-xs text-amber-600 font-semibold uppercase tracking-wide">Peak Hour</p>
+          <p className="text-xl font-bold text-amber-800">{insights.peakHour || 'N/A'}</p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="rounded-xl border border-slate-200 p-3">
+          <p className="text-xs text-slate-500 font-semibold uppercase tracking-wide mb-2">Machine Health</p>
+          <div className="h-2 rounded-full bg-slate-100 overflow-hidden flex">
+            <div className="bg-emerald-400" style={{ width: `${availableWidth}%` }} />
+            <div className="bg-blue-400" style={{ width: `${activeWidth}%` }} />
+            <div className="bg-red-400" style={{ width: `${outWidth}%` }} />
+          </div>
+          <div className="flex flex-wrap gap-3 mt-2 text-xs text-slate-600">
+            <span>Available: {machineStatusCounts.Available || 0}</span>
+            <span>In Use: {machineStatusCounts.Washing || 0}</span>
+            <span>Out of Order: {machineStatusCounts['Out of Order'] || 0}</span>
+          </div>
+        </div>
+
+        <div className="rounded-xl border border-slate-200 p-3">
+          <p className="text-xs text-slate-500 font-semibold uppercase tracking-wide mb-2">Report Pipeline</p>
+          <div className="h-2 rounded-full bg-slate-100 overflow-hidden flex">
+            <div className="bg-red-400" style={{ width: `${openReportWidth}%` }} />
+            <div className="bg-amber-400" style={{ width: `${inProgressReportWidth}%` }} />
+            <div className="bg-emerald-400" style={{ width: `${resolvedReportWidth}%` }} />
+          </div>
+          <div className="flex flex-wrap gap-3 mt-2 text-xs text-slate-600">
+            <span>Open: {reportStatusCounts.open || 0}</span>
+            <span>In Progress: {reportStatusCounts.in_progress || 0}</span>
+            <span>Resolved: {reportStatusCounts.resolved || 0}</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-4 rounded-xl border border-slate-200 p-3">
+        <div className="flex items-center gap-2 mb-2">
+          <ShieldCheck size={14} className="text-slate-500" />
+          <p className="text-xs text-slate-500 font-semibold uppercase tracking-wide">Recent Audit Trail</p>
+        </div>
+        {recentAuditLogs.length === 0 ? (
+          <p className="text-sm text-slate-500">No audit entries yet.</p>
+        ) : (
+          <div className="space-y-2 max-h-52 overflow-auto pr-1">
+            {recentAuditLogs.map((entry) => (
+              <div key={entry._id} className="rounded-lg bg-slate-50 px-3 py-2 border border-slate-100">
+                <p className="text-xs font-semibold text-slate-700">{entry.action}</p>
+                <p className="text-xs text-slate-500">
+                  {(entry.actor?.name || 'Unknown')} · {new Date(entry.createdAt).toLocaleString()}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 // ---------------------------------------------------------------------------
 // Dashboard
 // ---------------------------------------------------------------------------
@@ -246,6 +342,9 @@ const Dashboard = () => {
   const [reports, setReports] = useState([]);
   const [reportsLoading, setReportsLoading] = useState(false);
   const [reportsError, setReportsError] = useState('');
+  const [insights, setInsights] = useState(null);
+  const [insightsLoading, setInsightsLoading] = useState(false);
+  const [insightsError, setInsightsError] = useState('');
   const [reportStatusDrafts, setReportStatusDrafts] = useState({});
   const [busyReportId, setBusyReportId] = useState(null);
   const userFirstName = typeof user?.name === 'string' && user.name.trim()
@@ -281,12 +380,35 @@ const Dashboard = () => {
     }
   }, [isAdmin]);
 
+  const fetchInsights = useCallback(async (silent = false) => {
+    if (!isAdmin) return;
+    if (!silent) setInsightsLoading(true);
+    try {
+      const { data } = await api.get('/admin/insights');
+      setInsights(data.data || null);
+      setInsightsError('');
+    } catch {
+      setInsightsError('Failed to load admin analytics');
+    } finally {
+      setInsightsLoading(false);
+    }
+  }, [isAdmin]);
+
   useEffect(() => {
     fetchMachines();
-    if (isAdmin) fetchReports();
-    const interval = setInterval(() => fetchMachines(true), 15000);
+    if (isAdmin) {
+      fetchReports();
+      fetchInsights();
+    }
+    const interval = setInterval(() => {
+      fetchMachines(true);
+      if (isAdmin) {
+        fetchReports(true);
+        fetchInsights(true);
+      }
+    }, 15000);
     return () => clearInterval(interval);
-  }, [fetchMachines, fetchReports, isAdmin]);
+  }, [fetchMachines, fetchReports, fetchInsights, isAdmin]);
 
   // Reset type filter when switching blocks so grid never looks empty unexpectedly
   const handleBlockChange = (block) => {
@@ -370,7 +492,13 @@ const Dashboard = () => {
             </p>
           </div>
           <button
-            onClick={() => fetchMachines(true)}
+            onClick={() => {
+              fetchMachines(true);
+              if (isAdmin) {
+                fetchReports(true);
+                fetchInsights(true);
+              }
+            }}
             disabled={refreshing}
             className="btn-secondary text-sm self-start sm:self-auto"
           >
@@ -418,6 +546,17 @@ const Dashboard = () => {
                 Open Machine Management
               </Link>
             </div>
+
+            {insightsLoading ? (
+              <div className="card text-sm text-slate-500 flex items-center gap-2">
+                <Clock3 size={14} />
+                Loading admin analytics...
+              </div>
+            ) : insightsError ? (
+              <div className="card text-sm text-red-500">{insightsError}</div>
+            ) : (
+              <AdminInsightsPanel insights={insights || {}} />
+            )}
 
             {reportsLoading ? (
               <div className="card text-sm text-slate-500">Loading reports...</div>

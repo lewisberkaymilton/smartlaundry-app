@@ -4,6 +4,7 @@ const Machine  = require('../models/Machine');
 const User     = require('../models/User');
 const Session  = require('../models/Session');
 const Report   = require('../models/Report');
+const AuditLog = require('../models/AuditLog');
 
 const m = (name, block, type, status = 'Available') => ({ name, block, type, status, sessionDurationMinutes: 45 });
 
@@ -52,6 +53,7 @@ const seed = async () => {
 
   await Session.deleteMany({});
   await Report.deleteMany({});
+  await AuditLog.deleteMany({});
   await Machine.deleteMany({});
   await User.deleteMany({ email: adminUser.email });
 

@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const { logAuditEvent } = require('../utils/auditLogger');
 
 const signToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -43,6 +44,15 @@ const register = async (req, res) => {
       password,
       role: 'customer',
     });
+    await logAuditEvent({
+      req,
+      action: 'USER_REGISTERED',
+      entityType: 'Auth',
+      entityId: user._id,
+      actorId: user._id,
+      actorRole: user.role,
+      metadata: { email: user.email },
+    });
 
     sendTokenResponse(user, 201, res);
   } catch (error) {
@@ -63,6 +73,15 @@ const login = async (req, res) => {
     if (!user || !(await user.comparePassword(password))) {
       return res.status(401).json({ success: false, message: 'Invalid email or password' });
     }
+    await logAuditEvent({
+      req,
+      action: 'USER_LOGGED_IN',
+      entityType: 'Auth',
+      entityId: user._id,
+      actorId: user._id,
+      actorRole: user.role,
+      metadata: { email: user.email },
+    });
 
     sendTokenResponse(user, 200, res);
   } catch (error) {

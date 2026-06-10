@@ -1,5 +1,6 @@
 const Report = require('../models/Report');
 const Machine = require('../models/Machine');
+const { logAuditEvent } = require('../utils/auditLogger');
 
 // POST /api/reports
 const createReport = async (req, res) => {
@@ -85,6 +86,13 @@ const updateReportStatus = async (req, res) => {
     }
 
     await report.save();
+    await logAuditEvent({
+      req,
+      action: 'REPORT_STATUS_UPDATED',
+      entityType: 'Report',
+      entityId: report._id,
+      metadata: { status },
+    });
     const populated = await Report.findById(report._id)
       .populate('machine', 'name block type')
       .populate('reportedBy', 'name email')
