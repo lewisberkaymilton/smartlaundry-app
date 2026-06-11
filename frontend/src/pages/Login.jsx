@@ -54,24 +54,6 @@ const Login = () => {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4 mb-5">
-            <p className="text-xs uppercase tracking-wider text-cyan-300 font-semibold mb-3">Live Campus Snapshot</p>
-            <div className="grid grid-cols-3 gap-2 text-xs">
-              <div className="rounded-lg bg-emerald-500/15 border border-emerald-300/30 p-2">
-                <p className="text-emerald-200">Available</p>
-                <p className="text-lg font-bold text-emerald-100">14</p>
-              </div>
-              <div className="rounded-lg bg-blue-500/15 border border-blue-300/30 p-2">
-                <p className="text-blue-200">In Use</p>
-                <p className="text-lg font-bold text-blue-100">6</p>
-              </div>
-              <div className="rounded-lg bg-red-500/15 border border-red-300/30 p-2">
-                <p className="text-red-200">Faults</p>
-                <p className="text-lg font-bold text-red-100">1</p>
-              </div>
-            </div>
-          </div>
-
           <div className="space-y-3 text-sm text-slate-200">
             <div className="flex items-center gap-2">
               <Clock3 size={16} className="text-cyan-300" />
