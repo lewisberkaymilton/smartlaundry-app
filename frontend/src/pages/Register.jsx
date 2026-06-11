@@ -32,67 +32,53 @@ const Register = () => {
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-slate-200 via-slate-100 to-blue-100 flex items-center justify-center px-4 py-8">
-      {/* Background texture: soft grid + diagonal campus lanes */}
-      <div
-        className="absolute inset-0 opacity-40"
-        style={{
-          backgroundImage:
-            'linear-gradient(to right, rgba(148,163,184,0.15) 1px, transparent 1px), linear-gradient(to bottom, rgba(148,163,184,0.15) 1px, transparent 1px)',
-          backgroundSize: '34px 34px',
-        }}
-      />
+    <div className="relative min-h-screen overflow-hidden bg-slate-950 text-white flex items-center justify-center px-4 py-8">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_16%_20%,rgba(29,78,216,0.35),transparent_40%),radial-gradient(circle_at_82%_86%,rgba(6,182,212,0.28),transparent_42%)]" />
       <div
         className="absolute inset-0 opacity-20"
         style={{
           backgroundImage:
-            'repeating-linear-gradient(125deg, rgba(37,99,235,0.14) 0px, rgba(37,99,235,0.14) 2px, transparent 2px, transparent 24px)',
+            'linear-gradient(to right, rgba(148,163,184,0.16) 1px, transparent 1px), linear-gradient(to bottom, rgba(148,163,184,0.16) 1px, transparent 1px)',
+          backgroundSize: '32px 32px',
         }}
       />
-      <div className="absolute -top-28 -left-16 w-80 h-80 rounded-full bg-blue-300/20 blur-3xl" />
-      <div className="absolute -bottom-24 -right-10 w-96 h-96 rounded-full bg-cyan-300/20 blur-3xl" />
 
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: 'easeOut' }}
-        className="relative z-10 w-full max-w-5xl grid lg:grid-cols-2 overflow-hidden rounded-3xl border border-slate-200/80 bg-white/95 backdrop-blur shadow-2xl shadow-slate-300/60"
+        transition={{ duration: 0.45, ease: 'easeOut' }}
+        className="relative z-10 w-full max-w-6xl grid lg:grid-cols-[1.05fr_0.95fr] overflow-hidden rounded-3xl border border-white/10 bg-slate-900/65 backdrop-blur-xl shadow-2xl shadow-black/45"
       >
-        {/* Brand side */}
-        <div className="relative hidden lg:flex flex-col justify-between bg-gradient-to-br from-blue-800 via-blue-700 to-indigo-700 p-8 text-white">
-          <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.35),transparent_38%)]" />
-          <div>
-            <BrandMark size="lg" className="mb-4" />
-            <h1 className="text-3xl font-extrabold tracking-tight">
-              Smart<span className="text-blue-100">Laundry</span>
-            </h1>
-            <p className="mt-2 text-blue-100/90">
-              Create your account and skip the laundry queue.
-            </p>
+        <div className="p-7 sm:p-8 lg:p-10 border-b lg:border-b-0 lg:border-r border-white/10">
+          <div className="flex items-center gap-3 mb-6">
+            <BrandMark size="lg" />
+            <div>
+              <p className="text-2xl font-extrabold tracking-tight">
+                Smart<span className="text-cyan-300">Laundry</span>
+              </p>
+              <p className="text-slate-300 text-sm">Create your campus account</p>
+            </div>
           </div>
 
-          <div className="space-y-3 text-sm">
-            <div className="flex items-center gap-2">
-              <Building2 size={16} />
-              <span>Block-based machine management</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Wind size={16} />
-              <span>Dedicated washer & dryer flows</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <BadgeCheck size={16} />
-              <span>Instant usage history tracking</span>
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-4 mb-5">
+            <p className="text-xs uppercase tracking-wider text-cyan-300 font-semibold mb-3">Why Students Use It</p>
+            <div className="space-y-2 text-sm text-slate-200">
+              <p className="flex items-center gap-2"><Building2 size={14} className="text-cyan-300" /> Block-based machine discovery</p>
+              <p className="flex items-center gap-2"><Wind size={14} className="text-cyan-300" /> Separate washer & dryer flows</p>
+              <p className="flex items-center gap-2"><BadgeCheck size={14} className="text-cyan-300" /> Live usage and history tracking</p>
             </div>
           </div>
+
+          <p className="text-sm text-slate-300">
+            Create your account in less than a minute and start using real-time machine availability.
+          </p>
         </div>
 
-        {/* Form side */}
-        <div className="p-6 sm:p-8 lg:p-10">
-          <div className="text-center lg:text-left mb-7">
-            <BrandMark size="md" className="mb-4 lg:hidden mx-auto lg:mx-0" />
-            <h2 className="text-2xl font-bold text-slate-800">Create account</h2>
-            <p className="text-slate-500 text-sm mt-1">Join SmartLaundry in under a minute</p>
+        <div className="p-7 sm:p-8 lg:p-10 bg-white text-slate-900">
+          <div className="mb-7">
+            <p className="text-xs uppercase tracking-wider text-blue-600 font-semibold mb-2">New Account</p>
+            <h2 className="text-3xl font-extrabold text-slate-900">Create account</h2>
+            <p className="text-slate-500 text-sm mt-1">Join SmartLaundry and reserve your laundry flow.</p>
           </div>
 
           {error && (
